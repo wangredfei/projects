@@ -1,0 +1,156 @@
+{%extends 'myadmin/public/base.html' %}
+
+{% block con-header %}
+<div class="container-fluid am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span>会员添加</div>
+           
+        </div>
+        <div class="am-u-lg-3 tpl-index-settings-button">
+            <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置</button>
+        </div>
+    </div>
+
+</div>
+{%endblock%}
+{%block con-body%}
+<div class="row am-cf">
+
+<div class="widget am-cf">
+
+
+		<div class="widget-body am-fr">
+
+		    <form class="am-form tpl-form-line-form" action="{% url 'admin_user_insert' %}" method="post" enctype="multipart/form-data" >
+		        <div class="am-form-group">
+		            <label for="user-name" class="am-u-sm-3 am-form-label" > 用户名</label>
+		            <div class="am-u-sm-9">
+		                <input class="tpl-form-input username" id="user-name" placeholder="username" type="text"  name="username"><span class="norm" style="display: none ;" >请输入3-12位数字字母下划线组成的用户名</span>
+		                
+		            </div>
+		        </div>
+
+		        <div class="am-form-group">
+		            <label for="user-name" class="am-u-sm-3 am-form-label" >密码</label>
+		            <div class="am-u-sm-9">
+		                <input class="tpl-form-input" id="user-name" placeholder="password" type="password" name="password">
+		               
+		            </div>
+		        </div>
+
+		        <div class="am-form-group">
+		            <label for="user-name" class="am-u-sm-3 am-form-label" >邮箱 </label>
+		            <div class="am-u-sm-9">
+		                <input class="tpl-form-input" id="user-name" placeholder="email" type="email" name="email">
+		               
+		            </div>
+		        </div>
+
+		        <div class="am-form-group">
+		            <label for="user-name" class="am-u-sm-3 am-form-label" >手机号 </label>
+		            <div class="am-u-sm-9">
+		                <input class="tpl-form-input" id="user-name" placeholder="phone" type="text" name="phone">
+		               
+		            </div>
+		        </div>
+
+		        <div class="am-form-group">
+		            <label for="user-name" class="am-u-sm-3 am-form-label" >年龄</label>
+		            <div class="am-u-sm-9">
+		                <input class="tpl-form-input" id="user-name" placeholder="age" type="text" name="age">
+		               
+		            </div>
+		        </div>
+		        <!-- sex -->
+
+				<div class="am-form-group">
+					<label for="user-name" class="am-u-sm-3 am-form-label" >性别</label>
+					<label class="am-radio-inline">
+							<input type="radio"  value="男" name="xx"> 男 
+					</label>
+
+					<label class="am-radio-inline">
+							<input type="radio" name="xx" value="女">女
+					</label>
+
+				</div>
+		            
+		        
+
+		        <div class="am-form-group">
+		            <label for="user-weibo" class="am-u-sm-3 am-form-label">头像 </label>
+		            <div class="am-u-sm-9">
+		                <div class="am-form-group am-form-file">
+		                    <div class="tpl-form-file-img">
+		                        <img src="/static/pics/default/default.jpg" class="imgg" alt="" style="width: 100px">
+		                    </div>
+		                    <button type="button" class="am-btn am-btn-danger am-btn-sm">
+						<i class="am-icon-cloud-upload" ></i> 添加头像</button>
+		                    <input id="doc-form-file" multiple="" type="file" name="picurl" >
+		                </div>
+
+		            </div>
+		        </div>
+
+
+
+
+			    <div class="am-form-group">
+			        <div class="am-u-sm-9 am-u-sm-push-3">
+			            <button type="sublit" id="but" class="am-btn am-btn-primary tpl-btn-bg-color-success " disabled >提交</button>
+			        </div>
+			    </div>
+			    {% csrf_token %}
+		   </form>
+		</div>
+</div>
+                
+</div>
+
+<script type="text/javascript">
+    $('#doc-form-file').change(function(){
+        var a = $('.imgg').attr('src',URL.createObjectURL($(this)[0].files[0]));
+       
+    })
+
+    // $(".username").blur(function(){
+    // 	var a=$(".username").val()
+
+    	
+    // })
+
+	var b=1;
+    // 表单验证
+    $(".tpl-form-input").focus(function(){
+    	$('.norm').show();
+   	
+   })
+
+    $(".tpl-form-input").blur(function(){
+    	// 获取值
+    	var zhi=$(".tpl-form-input").val()
+
+    	//写规则
+    	var reg=/^\w{3,12}$/;
+    	var res=reg.test(zhi);
+
+		if(res){
+				$('.norm').html('输入正确')
+    			$("#but").removeAttr("disabled");
+
+   
+
+			}else{
+				$(".norm").html('格式不正确！请输入8-16位英文字母数字组成的用户名')
+				var b=0
+
+
+			}
+
+   	 })
+    
+    
+
+</script>
+{%endblock%}

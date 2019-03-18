@@ -1,0 +1,348 @@
+{% extends 'home/public/base.html' %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="/static/home/public/css/cart.css">
+<link rel="stylesheet" type="text/css" href="/static/home/public/css/cart-app.css">
+
+
+{% endblock %}
+
+{% block con %}
+<br><br><br><br>
+<div class="navbar-left">
+  <ol class="breadcrumb">
+    <a href="{% url 'index' %}" style="color:#444">首页 > </a>
+    <li class="active">购物车</li>
+  
+    <li>完成 </li>
+  </ol>
+</div>
+
+
+<div class="mainbody cart">
+		<div class="container" style="margin-top:-60px">
+			<!-- 购物车详情头 --><br><br><br>
+			<table class="cart-header">
+				<tbody>
+					<tr>
+						<td class="cart-col-select col-md-3 col-xs-3 col-sm-3">
+							<div class="cart-select-all JSelectAll">
+								<input type="checkbox" class="mz-checkbox" checked name="">
+
+								<span class="cart-select-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">全选</font></font></span>
+							</div>
+						</td>
+						<td class="cart-col-name col-md-3 hidden-xs hidden-sm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">商品</font></font></td>
+						<td class="cart-col-price col-md-2 hidden-xs hidden-sm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">单价(元)</font></font></td>
+						<td class="cart-col-number col-md-2 hidden-xs hidden-sm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">数量</font></font></td>
+						<td class="cart-col-total col-md-1 hidden-xs hidden-sm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">小计(元)</font></font></td>
+						<td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">操作</font></font></td>
+					</tr>
+				</tbody>
+			</table><!-- 购物车详情头 E-->
+			
+			<!-- 购物清单信息列表 -->
+			<div class="cart-merchant-list">
+				<div class="cart-merchant">
+					<table class="cart-merchant-body">
+						<tbody>
+						{% if request.session.cart.values %}
+
+						{%  for i in  request.session.cart.values %}
+
+							<tr class="cart-product" id="pro5">
+								<td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
+									<!-- div class="mz-checkbox "></div>  -->
+									<input type="checkbox" checked name="qx" class="qx"  gid="{{ i.gid }}">
+									<a href="meilanx.html" class="cart-product-link" target="_blank">
+										<img style="margin-left: 50px" src="{{ i.pic }}" class="cart-product-img" alt="{{ i.title }}">
+									</a>
+								</td>
+								<td class="cart-col-name col-md-3 col-xs-8 col-sm-8">
+									<a href="meilanx.html" class="cart-product-link" target="_blank">
+									  <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ i.title }}</font></font></p>
+									  <span class="cart-product-desc"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></span>
+									</a>
+									<p>
+										<span class="cart-product-price"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ i.price }}</font></font></span>
+									</p>
+									<div class="cart-col-number">
+										<div class="cart-product-number-adder">
+											<p class="cart-product-number-max show"></p>
+
+										</div>
+									</div>
+								</td>
+								<td class="cart-col-price col-md-2 hidden-xs hidden-sm">
+									<p>
+										<span class="cart-product-price">{{ i.price }}</span>
+									</p>
+								</td>
+								<td class="cart-col-number col-md-2 hidden-xs hidden-sm">
+									<div class="cart-product-number-adder">
+										<p class="cart-product-number-max show"></p>
+										<div class="mz-adder">
+											<button class="mz-adder-subtract " gid="{{ i.gid }}"></button>
+											<div  class=" mz-adder-num disabled"><input class="mz-adder-input" value="{{ i.num }}"  type="text"></div>
+											<button class="mz-adder-add" gid="{{ i.gid }}"></button>
+										</div>
+									</div>
+								</td>
+								<td class="cart-col-total col-md-1 hidden-xs hidden-sm">
+								{% load pagetag %}
+									<span class="cart-product-price totall">{% cheng i.num i.price %}</span>
+						
+								</td>
+								<td class="cart-col-ctrl col-md-1  hidden-xs hidden-sm">
+									<div class="cart-product-remove">
+										<span gid="{{ i.gid }}" class="glyphicon glyphicon-remove"></span>
+									</div>
+								</td>
+							</tr>
+							{% csrf_token %}
+						{% endfor %}
+
+						{% else %}
+							<div style="height:100px;text-align: center; padding:30px" >
+								<h4>您当前还没有选择任何东西快去购物吧  <a href="{% url 'index' %}">继续购物</a></h4>
+
+							</div>
+ 
+
+						{% endif %}
+						</tbody>
+					</table>
+				</div>
+			</div><!-- 购物清单信息列表 E-->
+		</div>
+		<!-- 结算详情 -->
+		<div class="cart-footer" id="cartFooter">
+			<div class="container">
+			   <div class="cart-footer-left col-md-6 col-xs-4 col-sm-4">
+				   <div class="cart-select-all JSelectAll" data-mdesc="全选按钮" data-mtype="store_cart_all">
+						<div class="mz-checkbox"></div>
+						<span class="cart-select-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">全选</font></font></span>
+				   </div>
+				   <!-- <span class="cart-remove-selected" id="removeSelected">删除选中的商品</span> -->
+				   <span class="cart-footer-count"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+						共
+						 </font></font><span class="cart-footer-num" id="totalCount"><font style="vertical-align: inherit;"><font class="sums" style="vertical-align: inherit;">{{ num }}</font></font></span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> 
+						件商品
+				   </font></font></span>
+				   
+				<div class="mz-btn success" id="cartSubmit"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><a href="{% url 'cartclear' %}">清空购物车</a></font></font></div>
+				</div>
+				<div class="cart-footer-right col-md-5 col-md-offset-1 col-sm-offset-2 col-xs-8 col-sm-6">
+					<span class="cart-footer-sum">
+						<span class="cart-footer-text"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">已优惠</font></font></span>
+						<span class="cart-footer-num red" id="totalDiscount"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0.00</font></font></span>
+						<span class="cart-footer-text"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">元，合计(不含运费)：</font></font></span>
+						<span class="cart-footer-total totals" id="totalPrice"><font style="vertical-align: inherit;"><font class="totalprice" style="vertical-align: inherit;">{{ totals }}</font></font></span>
+					</span>
+			
+						<button class="mz-btn success ok" id="ordersubmit" >去结算</button>
+						
+			
+
+				</div>
+			</div>
+		</div><!-- 结算详情 E-->
+	</div>
+
+{% endblock%}
+
+{% block js %}
+<script type="text/javascript">
+//回顶部
+backTop();
+//全选
+allSelect();
+//商品数量加减
+// cartAddMin();
+
+
+//商品删除
+$(".glyphicon-remove").click(function(){
+	var gid=$(this).attr("gid")
+	var t=$(this)
+	$.get("{% url 'delgoods' %}",{"gid":gid},function(data){
+		
+		t.parents('.cart-product').remove();
+		$(".sums").html(data["nums"]);
+		$(".totals").text(data["totals"]);
+		
+
+	})
+
+})
+//商品减减
+$(".mz-adder-subtract").click(function(){
+	var t=$(this)
+	var gid=$(this).attr("gid");
+	
+	t.parents("tr").eq(0).find('input').prop("checked",true);
+	$.get("{% url 'subbutton' %}",{"gid":gid},function(data){
+
+		t.next().children().val(data["num"]);
+		t.parents('td').next().children().html(data["total"]);
+		$(".sums").html(data["nums"]);
+		$(".totals").text(data["totals"]);
+		
+	},"json")
+})  
+//商品加加
+$(".mz-adder-add").click(function(){
+	var t=$(this)
+	var gid=$(this).attr("gid");
+	t.parents("tr").eq(0).find('input').prop("checked",true);
+	
+	$.get("{% url 'addbutton' %}",{"gid":gid},function(data){
+		t.prev().children().val(data["num"]);
+		t.parents('td').next().children().html(data["total"]);
+		$(".sums").html(data["nums"]);
+		$(".totals").text(data["totals"]);
+	},"json")
+})
+
+//多选框选中事件
+$("input[name=qx]").click(function(){
+	//判断当前点击的多选框状态 //true //false
+	var state=$(this).prop("checked") 
+	
+	// 获取当前所有为选中的gid 
+	var checkedlist =new Array();
+
+	$("input[name=qx]:not(:checked)").each(function(){
+		checkedlist.push($(this).attr("gid"))
+	})
+
+	// var oblist={chesklist:checkedlist}
+	// console.log(oblist,typeof(oblist))
+
+	if(state==false){
+	//发送ajax
+	$.ajaxSetup({data:{csrfmiddlewaretoken:'{{ csrf_token }}'}});
+	$.ajax({
+
+		url:'{% url "deltatels" %}',
+		type:"post",
+		data:{"gid":checkedlist},
+		dataType:"json",
+		traditional:true,
+		success:function(data){
+			$(".totals").text(data["totalss"]);
+		}
+	})
+
+	}else{
+	
+	//发送ajax
+	$.ajaxSetup({data:{csrfmiddlewaretoken:'{{ csrf_token }}'}});
+	$.ajax({
+
+		url:'{% url "addtatels" %}',
+		type:"post",
+		data:{"gid":checkedlist},
+		dataType:"json",
+		traditional:true,
+		success:function(data){
+			$(".totals").text(data["totalss"]);
+		}
+	})
+
+	}
+
+})
+
+
+
+// 全选 当单机全选时
+$(".mz-checkbox").click(function(){
+	var a = $("input[name=qx]")
+	for (i in a){
+		if (a[i].checked==true){
+			a[i].checked=false;
+	
+
+		}else{
+			a[i].checked=true;
+		}
+	}
+})
+
+
+$(".mz-checkbox").click(function(){
+	//查询全选的状态
+	var states=$(this).prop("checked")
+	if(states==true){
+		// 发送ajax查询所有的商品总和
+			$.get("{% url 'alltatels' %}",function(data){
+				$(".totals").text(data["totalss"]);
+			})
+	}else{
+		$(".totals").text('0.00');
+	}
+
+
+})
+
+
+
+$("#ordersubmit").click(function(){
+	
+	//查询选中的商品id
+	var checkedlist =new Array();
+
+	$("input[name=qx]:checked").each(function(){
+		checkedlist.push($(this).attr("gid"))
+	
+	})
+	if (checkedlist.length==0){
+		alert("请选中要购买的商品");
+		
+	}else{
+		location.href="/order/ok/?ids="+checkedlist.join(",");
+	}
+	
+})
+
+
+
+
+
+// 全选
+// $(".mz-checkbox").click(function(){
+// 	var a = $("input[name=qx]")
+// 	for (i in a){
+// 		if (a[i].checked==true){
+// 			a[i].checked=false;
+// 		}else{
+// 			a[i].checked=true;
+// 		}
+// 	}
+// })
+// var arr = new Array()
+// //统计总数
+// // $("input[name=qx]").click(function(){
+// 	$('document').ready(function(){
+// 	// $("input[type='checkbox']:checked").length;
+// 	$('body').find ("input[type='checkbox']:checked").length;
+// 	var num = $(this).parents("tr").find(".totall").text()
+
+// 	arr.push(num)
+// 	var sum = 0
+// 	for(var i=0; i< arr.length;i++){
+// 		sum += parseInt(arr[i])
+// 	}
+// 	// alert(sum)
+// 	$('.cart-footer-total').html(sum)
+// })
+
+
+
+
+
+</script>
+
+
+{% endblock %}

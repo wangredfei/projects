@@ -1,0 +1,195 @@
+{%extends 'myadmin/public/base.html' %}
+{% block con-header %}
+<div class="container-fluid am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span>订单列表</div>
+           
+        </div>
+        <div class="am-u-lg-3 tpl-index-settings-button">
+            <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置</button>
+        </div>
+    </div>
+
+</div>
+{%endblock%}
+
+
+
+{% block con-body %}
+<div class="row-content am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+            <div class="widget am-cf">
+               
+                <div class="widget-body  am-fr">
+
+                    <div class="am-u-sm-2 am-u-md-2 am-u-lg-2">
+                        <div class="am-form-group">
+                            <div class="am-btn-toolbar" style="width:300px">
+                                <div class="am-btn-group am-btn-group-xs">
+                                    <button type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
+                  
+                                    <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="am-u-sm-4 am-u-md-4 am-u-lg-4">
+                    <form>
+                        <div class="am-form-group">
+                            <div class="am-btn-toolbar">
+                               <input type="text" name="begin"  value="{{ request.GET.begin }}" style="width:100px;background: #444"> -
+                               <input type="text" name="end" style="width:100px;background: #444" value="{{ request.GET.end }}">
+                               <button>搜索</button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+
+                    <!-- 条件搜索 -->
+                    <form>
+                        <div class="am-u-sm-3 am-u-md-3 am-u-lg-2">
+                            <div class="am-form-group tpl-table-list-select">
+                                <select name="type" data-am-selected="{btnSize: 'sm'}" style="display: none;">
+                                <option{% if request.GET.type == '0'  %} selected {% endif  %} value="0" >全部</option> 
+                                  <option{% if request.GET.type == '1'  %} selected {% endif  %} value="1" >未付款</option>
+                                  <option{% if request.GET.type == '2'  %} selected {% endif  %} value="2" >待发货</option>
+                                  <option{% if request.GET.type == '3'  %} selected {% endif  %} value="3" >已发货</option> 
+                                  <option{% if request.GET.type == '4'  %} selected {% endif  %} value="4" >取消订单</option> 
+                                    <option{% if request.GET.type == '5'  %} selected {% endif  %} value="5" >其他</option> 
+                                </select>
+                            </div>
+                        </div>
+                        <div class="am-u-sm-3 am-u-md-3 am-u-lg-3">
+                            <div class="am-input-group am-input-group-sm tpl-form-border-form cl-p">
+                                <input type="text" name="keywords" class="am-form-field " value="{{ request.GET.keywords }}" >
+                                <span class="am-input-group-btn">
+                                  <button class="am-btn  am-btn-default am-btn-success tpl-table-list-field am-icon-search"></button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- 展示内容 -->
+                    <div class="am-u-sm-12">
+                        <table width="100%" class="am-table am-table-compact am-table-striped tpl-table-black ">
+                            <thead>
+                            <center>
+                                <tr>
+                                    
+                                    <th>订单号</th>
+                                    
+                                    <th >订单用户</th>
+
+                                  
+                                    <th>总价</th>
+                                    
+                                    <th>总数</th>
+                                    <th>添加时间</th>
+                                    <th>订单状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </center>
+                            </thead>
+                            <tbody>
+                            	{% for v in ob %}
+                                <center>
+                                    <tr class="gradeX">
+                                  
+                                           
+                                 
+
+                                        <td class="am-text-middle">{{ v.id }}</td>
+                                        
+                                        <td class="am-text-middle" >{{ v.uid.username }}</td>
+                                        <td class="am-text-middle">{{ v.totalprice }}</td>
+                                        <td class="am-text-middle">{{ v.totalnum }}</td>
+                                     
+                                        
+                                        <td class="am-text-middle">{{ v.addtime|date:'Y-m-d ' }}</td>
+
+                                        <td class="am-text-middle">
+                                            <select uid="{{ v.id }}" name="st" class="user_status_save statu" style="color:#000">
+                                            
+                                                <option{% if v.status == 1 %} selected {% endif %} value="1"  >待付款</option>
+                                         
+                                                <option{% if v.status == 2 %}  selected {% endif %} value="2"  >待发货</option>
+                                         
+                                         
+                                                <option{% if v.status == 3 %} selected {% endif %} value="3"  >已发货</option>
+                                      
+                                                <option{% if v.status == 4 %} selected {% endif %} value="4" >取消订单</option>
+                                        
+                                                <option{% if v.status == 5 %} selected {% endif %} value="5" >其他</option>
+                                        
+                                               
+                                            </select>
+                                          
+                                        </td>
+                                       
+                                        <td class="am-text-middle">
+                                            <div class="tpl-table-black-operation">
+                                                <a href="{% url 'admin_order_orderlook' v.id %}">
+                                                    <i class="am-icon-pencil"></i> 查看
+                                                </a>
+                                                {% if v.status != 3 %}
+                                                <a href="{% url 'admin_order_fagoods' v.id  %}">
+                                                    <i class="am-icon-pencil"></i>  未发货
+                                                </a>
+                                                {% else %}
+                                                    <a href="">
+                                                        <i class="am-icon-pencil"></i> 已发货
+                                                    </a>
+                                                {% endif %}
+                                                
+                                              
+                                                
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </center>
+                            	{% endfor %}
+
+                             
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="am-u-lg-12 am-cf">
+
+                        <div class="am-fr">
+                            <ul class="am-pagination tpl-pagination">
+                               
+                                  {%  load pagetag %}
+                                  
+                                  {% showpage ob.paginator.num_pages request %}
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(".statu").change(function(){
+    // 获取当前选择的值
+    var v=$(this).val()
+    var i=$(this).attr("uid")
+    // 发送ajax
+    $.get("{% url 'admin_order_statu' %}",{v:v,i:i},function(){
+        location.href=location.href
+
+    })
+})
+
+
+
+
+
+</script>
+{% endblock %}

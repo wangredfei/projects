@@ -1,0 +1,62 @@
+﻿#创建库
+create database kfc;
+
+
+
+#创建vip表代码字段
+create table vip(id int primary key auto_increment,name varchar(20) not null, password varchar(40) not null,
+phonenum varchar(20) not null unique,money int not null,time timestamp);
+
+
+
+#创建food表的代码字段
+create table food(f_id int,f_name varchar(20) not null, f_money varchar(20) not null,
+fcount int,ftime timestamp);
+
+
+
+#创建sell销售表
+create table sell(id int primary key auto_increment,s_name varchar(40) default 'passerby',
+time timestamp,csum int default 0,spsum int default 0);
+
+
+
+#创建管理员waiter表
+create table waiter(id int primary key auto_increment,a_name varchar(20) not null,password varchar(40) not null,
+a_phonenum varchar(20) not null unique,time timestamp);
+
+
+
+
+#添加数据
+insert into food values
+(101,"嫩牛五方",18,20,now()),
+(102,'碳烤鸡腿堡',16.5,20,now()),
+(103,'藤椒嫩笋鸡腿卷',17.5,20,now()),
+(104,'藤椒嫩笋鸡腿双层堡',21.5,20,now()),
+(105,'芝士肌肉堡',9.5,20,now()),
+(106,'芝士芒果堡',11.5,20,now()),
+(107,'芝士猪柳堡',12.5,20,now()),
+(108,'薯条',5.0,20,now()),
+(109,'辣翅',9.9,20,now()),
+(201,'縢胶卷堡双人餐',69,20,now()),
+(202,'藤椒嫩笋堡辣翅',36.5,20,now()),
+(203,'藤椒嫩笋堡薯条',36.5,20,now()),
+(204,'藤椒嫩笋卷辣翅',35,20,now()),
+(205,'藤椒嫩笋卷薯条',35,20,now()),
+(301,'超级外卖全家桶',119,10,now()),
+(302,'外送全家桶',93,10,now()),
+(303,'五味小吃桶',48,10,now()),
+(401,'纯纯玉米饮',11,20,now()),
+(402,'红豆酒酿饮',11,20,now()),
+(403,'九珍果汁饮料',11,20,now()),
+(404,'可乐',7,20,now()),
+(405,'恋橙乌龙茶',12.5,20,now()),
+(406,'热柠檬红茶',11.0,20,now()),
+(407,'香醇奶茶',9.5,20,now());
+
+
+
+多表查询
+select money,csum from vip,sell where name=s_name;
+create table admin(id int primary key auto_increment,a_name varchar(20) not null,password varchar(40) not null,a_phonenum varchar(20) not null unique,time timestamp);

@@ -1,0 +1,253 @@
+{% extends 'home/public/base.html' %}
+
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="/static/home/public/css/cart.css">
+<link rel="stylesheet" type="text/css" href="/static/home/public/css/cart-app.css">
+
+{% endblock %}
+
+{% block con %}
+<div class="modal fade" id="myModal"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog "  role="document">
+            <div class="modal-content">
+            
+            <form action="{% url 'orderok' %}?ids={{ request.GET.ids }}" method="post">
+                {% csrf_token %}
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加收货地址</h4>
+              </div>
+              <div class="modal-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">收货人</label>
+                    <input type="text" name="aname" class="form-control"  placeholder="收货人">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">收货电话</label>
+                    <input type="text" name="aphone" class="form-control"  placeholder="收货电话">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">收货地址</label>
+                    <input type="text" name="adds" class="form-control"  placeholder="收货地址">
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                      <input name="status" value="1" type="checkbox"> 是否设为默认地址
+                    </label>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button  class="btn btn-primary">保存</button>
+              </div>
+            </form>
+
+            </div>
+          </div>
+        </div>
+
+
+<br><br><br><br>
+<div class="mainbody cart" >
+        <div class="container">
+            <h4>收货信息确认:
+                <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#myModal">添加收货地址</button>
+            </h4>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="row">
+                    {% for v in address %}
+                        <div class="col-md-3 address-items" aid="{{ v.id }}" ischecked="{{ v.status }}" {% if v.status == 1%} style="border:2px dashed red;margin-left: 5px;margin-top: 5px;" {% else %} style="border:2px solid black;margin-left: 5px;margin-top: 5px;" {% endif %}>
+                            <address>
+                              <strong>收货人:{{ v.aname }}</strong><br>
+                              收货地址:{{ v.adds }}<br>
+                              <abbr title="Phone">收货电话:</abbr>{{ v.aphone }}
+                            </address>
+                        </div>
+                    {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Button trigger modal -->
+
+        <!-- Modal -->
+        
+
+
+
+
+		<div class="container">
+			<!-- 购物车详情头 --><br><br><br>
+			<table class="cart-header">
+				<tbody>
+					<tr>
+						<td class="cart-col-select col-md-3 col-xs-3 col-sm-3">
+							<div class="cart-select-all JSelectAll">
+								
+
+								<span class="cart-select-title" style="margin-left: 100px">商品图<font style="vertical-align: inherit;"></font></span>
+							</div>
+						</td>
+						<td class="cart-col-name col-md-3 hidden-xs hidden-sm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;margin-left: 100px" >商品</font></font></td>
+						<td class="cart-col-price col-md-2 hidden-xs hidden-sm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">单价(元)</font></font></td>
+						<td class="cart-col-number col-md-2 hidden-xs hidden-sm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">数量</font></font></td>
+						<td class="cart-col-total col-md-1 hidden-xs hidden-sm"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">小计(元)</font></font></td>
+						<td class="cart-col-ctrl col-md-1 hidden-xs hidden-sm"><font style="vertical-align: inherit;"></font></td>
+					</tr>
+				</tbody>
+			</table><!-- 购物车详情头 E-->
+			
+			<!-- 购物清单信息列表 -->
+			<div class="cart-merchant-list">
+				<div class="cart-merchant">
+					<table class="cart-merchant-body">
+						<tbody>
+						
+							{% for i in request.session.order.values %}
+							<tr class="cart-product" id="pro5">
+							
+								<td class="cart-col-select col-md-3 col-xs-4 col-sm-4">  
+									
+									<a href="meilanx.html" class="cart-product-link" target="_blank">
+										<img style="margin-left: 50px" src="{{ i.pic }}" class="cart-product-img" alt="{{ i.title }}">
+									</a>
+								</td>
+								<td class="cart-col-name col-md-3 col-xs-8 col-sm-8">
+									<a href="meilanx.html" class="cart-product-link" target="_blank">
+									  <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></p>
+									  <span class="cart-product-desc"><font style="margin-left: 100px"><font "></font>{{ i.title }}</font></span>
+									</a>
+									<p>
+										<span class="cart-product-price"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ i.price }}</font></font></span>
+									</p>
+									<div class="cart-col-number">
+										<div class="cart-product-number-adder">
+											<p class="cart-product-number-max show"></p>
+
+										</div>
+									</div>
+								</td>
+								<td class="cart-col-price col-md-2 hidden-xs hidden-sm">
+									<p>
+										<span class="cart-product-price">{{ i.price }}</span>
+									</p>
+								</td>
+								<td class="cart-col-number col-md-2 hidden-xs hidden-sm">
+									<div class="cart-product-number-adder">
+										<p class="cart-product-number-max show"></p>
+										
+
+											<div   class=" mz-adder-num disabled">{{ i.num }} </div>
+									
+									</div>
+								</td>
+								<td class="cart-col-total col-md-1 hidden-xs hidden-sm">
+									{% load pagetag %}
+									
+									<span class="cart-product-price totall">{% cheng i.num i.price %}</span>
+								
+									
+								</td>
+								<td class="cart-col-ctrl col-md-1  hidden-xs hidden-sm">
+									
+								</td>
+							
+							</tr>
+							{% endfor %}
+							
+			
+
+						</tbody>
+					</table>
+				</div>
+			</div><!-- 购物清单信息列表 E-->
+		</div>
+		<!-- 结算详情 -->
+		<div class="cart-footer" id="cartFooter">
+			<div class="container">
+			   <div class="cart-footer-left col-md-6 col-xs-4 col-sm-4">
+				   <div class="cart-select-all JSelectAll" data-mdesc="全选按钮" data-mtype="store_cart_all">
+						
+				   </div>
+				   <!-- <span class="cart-remove-selected" id="removeSelected">删除选中的商品</span> -->
+				   <span style="margin-left: 100px" class="cart-footer-count"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+						共
+						 </font></font><span class="cart-footer-num" id="totalCount"><font style="vertical-align: inherit;"><font class="sums" style="vertical-align: inherit;">{{ num }}</font></font></span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"> 
+						件商品
+				   </font></font></span>
+				   
+			
+				</div>
+				<div class="cart-footer-right col-md-5 col-md-offset-1 col-sm-offset-2 col-xs-8 col-sm-6">
+					<span class="cart-footer-sum">
+						<span class="cart-footer-text"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">已优惠</font></font></span>
+						<span class="cart-footer-num red" id="totalDiscount"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">0.00</font></font></span>
+						<span class="cart-footer-text"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">元，合计(不含运费)：</font></font></span>
+						<span class="cart-footer-total totals" id="totalPrice"><font style="vertical-align: inherit;"><font class="totalprice" style="vertical-align: inherit;">{{ total }}</font></font></span>
+					</span>
+			
+					<form id="createFrom" action="{% url 'ordercreate' %}" method="post" style="display: inline-block;">
+                        {% csrf_token %}
+                        <input type="hidden" name="addressid" value="">
+                        <button class="mz-btn success" id="cartSubmit">提交订单</button>
+                    </form>  
+
+			
+
+				</div>
+			</div>
+		</div><!-- 结算详情 E-->
+	</div>
+
+{% endblock%}
+
+{% block js %}
+<script type="text/javascript">
+//回顶部
+backTop();
+//全选
+allSelect();
+$("#myModal").modal({
+    backdrop:false,
+    keyboard:false,
+    show:false,
+
+});
+//给所有地址绑定单机事件
+$(".address-items").click(function(){
+    // 给当前选择的地址添加样式
+    $(this).css("border","2px dashed red").siblings().css('border',"2px solid black")
+    // 吧当前选择的地址id添加到表单中
+    aid = $(this).attr("aid")
+
+    $('input[name=addressid]').val(aid)
+   
+
+
+})
+ // 把默认地址添加到表单中
+aid = $('.address-items[ischecked=1]').attr('aid')
+$('input[name=addressid]').val(aid)
+
+// 表单事件,确认是否选择了地址
+$('#createFrom').submit(function(){
+    // 确认是否选择了地址
+    aid = $('input[name=addressid]').val()
+    if(!aid){
+        alert('请选择收货地址,')
+        return false;
+    }
+
+})
+
+
+
+</script>
+
+
+{% endblock %}

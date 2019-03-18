@@ -1,0 +1,34 @@
+before_script:
+#    - rm -rf /root/go/src/cloudcare-backend
+    - rm -rf /root/workspaces/ProgramFiles/Py2Code/HFOnline
+#    - mkdir -p /root/go/src/cloudcare-backend/
+    - mkdir -p /root/workspaces/ProgramFiles/Py2Code/HFOnline/
+#    - mv * /root/go/src/cloudcare-backend/
+    - mv * /root/workspaces/ProgramFiles/Py2Code/HFOnline/
+#    - cd /root/go/src/cloudcare-backend/
+    - cd /root/workspaces/ProgramFiles/Py2Code/HFOnline/
+
+stages:
+   - deploy
+
+build:
+  stage: deploy
+  only:
+    - master
+  script:
+  - docker build -t HFOnline:latest .
+  - docker tag HFOnline registry.jiagouyun.com/cloudcare-backend
+  - docker push registry.jiagouyun.com/cloudcare-backend
+  tags:
+  - docker
+
+buildTesting:
+  stage: deploy
+  only:
+    - master
+  script:
+  - docker build -t HFOnline:testing .
+  - docker tag HFOnline:testing www.hackfeng.cn/HFOnline:testing
+  - docker push www.hackfeng.cn/HFOnline:testing
+  tags:
+  - docker

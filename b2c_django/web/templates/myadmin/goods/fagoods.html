@@ -1,0 +1,81 @@
+{%extends 'myadmin/public/base.html' %}
+
+{% block con-header %}
+<div class="container-fluid am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span>订单发货</div>
+           
+        </div>
+     
+    </div>
+
+</div>
+{%endblock%}
+{%block con-body%}
+<div class="row am-cf">
+
+<div class="widget am-cf">
+
+
+        <div class="widget-body am-fr">
+
+            <form class="am-form tpl-form-line-form" action="" method="post" enctype="multipart/form-data" >
+
+            
+
+
+
+                <div class="am-form-group">
+                    <label for="user-name" class="am-u-sm-3 am-form-label" >物流公司</label>
+                    
+                    <div class="am-u-sm-9">
+                        <input class="tpl-form-input wuliu" id="user-name" placeholder="物流" type="text"  name="wuliu">
+                        
+                    </div>
+                </div>
+
+               <div class="am-form-group">
+                    <label for="user-name" class="am-u-sm-3 am-form-label" >单号</label>
+                    
+                    <div class="am-u-sm-9">
+                        <input class="tpl-form-input oddnum" id="user-name" placeholder="单号" type="text"  name="oddnum">
+                        
+                    </div>
+                </div>
+       
+                
+
+
+
+
+                <div class="am-form-group">
+                    <div class="am-u-sm-9 am-u-sm-push-3">
+                        <button type="sublit" id="but" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+                    </div>
+                </div>
+                {% csrf_token %}
+           </form>
+        </div>
+</div>
+                
+</div>
+
+<script type="text/javascript">
+    $('#doc-form-file').change(function(){
+        var a = $('.imgg').attr('src',URL.createObjectURL($(this)[0].files[0]));
+       
+    })
+
+    // $(".username").blur(function(){
+    //  var a=$(".username").val()
+
+        
+    // })
+
+ 
+    
+    
+
+</script>
+{%endblock%}

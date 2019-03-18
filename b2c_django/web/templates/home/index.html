@@ -1,0 +1,29 @@
+{% extends 'home/public/base.html' %}
+
+   
+{% block head %}
+<!-- 头部 侧导航 -->
+<ul class="home-category hidden-xs hidden-sm" id="homeCategory">
+  {% for i in glist %}
+    <li class="home-category-item">
+      <a href="{% url 'lists' i.id %}" class="home-category-link">{{ i.name }}</a>
+
+      <div class="home-category-child clearfix">
+        <div class="home-category-child-list clearfix">
+        {% for ii in i.sub %}
+            <a href="{% url 'lists' ii.id %}" class="home-category-child-item title" title=" {{ ii.name }} ">
+             {{ ii.name }}
+            </a>
+            {% for iii in ii.sub %}
+            <a class="home-category-child-item" href="{% url 'info' iii.id %}" target="_blank" >
+              <img class="home-category-child-img" src="{{ iii.pic }}" height="40" width="40">
+              <div class="home-category-child-text">{{ iii.title }}</div>
+            </a>
+            {% endfor%}
+        {% endfor %}
+        </div>
+      </div>
+    </li>
+  {% endfor %}
+
+{% endblock%}

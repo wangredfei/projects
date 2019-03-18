@@ -1,0 +1,74 @@
+{%extends 'myadmin/public/base.html' %}
+
+{% block con-header %}
+<div class="container-fluid am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading"><span class="am-icon-home page-header-heading-icon"></span>类型修改</div>
+           
+        </div>
+        <div class="am-u-lg-3 tpl-index-settings-button">
+            <button type="button" class="page-header-button"><span class="am-icon-paint-brush"></span> 设置</button>
+        </div>
+    </div>
+
+</div>
+{%endblock%}
+{%block con-body%}
+<div class="row am-cf">
+
+<div class="widget am-cf">
+
+
+		<div class="widget-body am-fr">
+
+		    <form class="am-form tpl-form-line-form" action="{% url 'admin_type_update' %}" method="post" enctype="multipart/form-data" >
+
+	    	  	<div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">
+                            所属分类
+                        </label>
+                        <select name="pid" data-am-selected="{btnSize: 'sm'}" style="display: none;">
+                          	{% for v in alist %}
+                          		{% if ob.pid == v.id  %}
+	                       
+	                                <option value="{{ v.id }}" selected > {{ v.name }} </option>
+	                            {% else %}
+	                                <option value="{{ v.id }}" disabled > {{ v.name }} </option>
+
+	                            
+	                            {% endif %}
+	                      
+	                            
+
+                          	{% endfor %}
+                        </select>
+                </div>
+
+
+
+
+		        <div class="am-form-group">
+		            <label for="user-name" class="am-u-sm-3 am-form-label"> 商品分类名</label>
+		            <div class="am-u-sm-9">
+		                <input class="tpl-form-input" id="user-name" placeholder="请输入要修改的分类名" type="text"  name="name" value="{{ ob.name }}">
+		                
+		            </div>
+		        </div>
+		      
+
+		       	<input type="hidden" name="uid" value="{{ ob.id }}">
+
+
+			    <div class="am-form-group">
+			        <div class="am-u-sm-9 am-u-sm-push-3">
+			            <button type="sublit" class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button>
+			        </div>
+			    </div>
+			    {% csrf_token %}
+		   </form>
+		</div>
+</div>
+                
+</div>
+{%endblock%}
